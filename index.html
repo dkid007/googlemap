@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	 <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+<link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.css"/>
+
+	<style>
+      html, body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+
+      #map-canvas {
+		margin: 0 auto;
+		height: 50%;
+		width: 50%;
+		margin-top: 80px;
+      }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div id="map-canvas"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script src="node_modules/jquery/dist/jquery.js"></script>
+
+<script src="custom.js"></script>
+
+<script>
+
+	var map;
+//2. Here we have changed brookyln to a new variable, Auckland
+var auckland = new google.maps.LatLng(-36.858644, 174.761359);
+
+var MY_MAPTYPE_ID = 'custom_style';
+
+function initialize() {
+  //1. Here we have added the JSON data after the variable featureOpts:
+  var featureOpts = [
+ {
+    "featureType": "road",
+    "stylers": [
+      { "featureType": "water",
+    "stylers": [
+      { "hue": "#00eeff" }
+    ]
+  },{
+  },{
+    "featureType": "road",
+    "stylers": [
+      { "hue": "#ff2200" }
+    ]
+  }
+    ]
+  }
+];
+
+  var mapOptions = {
+    zoom: 15,
+    //3. auckland is also placed here
+    center: auckland,
+    mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
+    },
+    mapTypeId: MY_MAPTYPE_ID
+  };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+  var styledMapOptions = {
+    name: 'Custom Style'
+  };
+
+  var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
+
+  map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
+
+  //We add the marker variable to the initialize function and reference auckland
+  //which is a global variable.
+  var image = 'images/marker.png';
+  var marker = new google.maps.Marker({
+      position: auckland,
+      map: map,
+      title: 'Hello World!',
+      icon: image
+
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+
+</body>
+
+</html>
